@@ -2,7 +2,12 @@
 
 """
 推荐喜欢乐队
+
+1.数据存在 分数膨胀 问题，就是hi用皮尔逊相关系数
+2.数据比较 密集 ，变量之间都存在公有值，使用欧几里得或曼哈顿距离
+3.数据是 稀疏 的，使用余弦相似度
 """
+from math import sqrt
 
 users = {"Angelica": {"Blues Traveler": 3.5, "Broken Bells": 2.0,
                       "Norah Jones": 4.5, "Phoenix": 5.0,
@@ -45,7 +50,7 @@ users = {"Angelica": {"Blues Traveler": 3.5, "Broken Bells": 2.0,
 
 def manhattan(rating1, rating2):
     """
-    计算曼哈顿距离。
+    曼哈顿距离。
     :param rating1: 数据格式{"The Strokes": 2.5, "Vampire Weekend": 2.0}
     :param rating2: 数据格式"The Strokes": 2.5, "Vampire Weekend": 2.0}
     :return: 曼哈顿距离
@@ -72,6 +77,36 @@ def minkowski(rating1, rating2, r):
         if key in rating2:
             distance += pow(abs(rating1[key] - rating2[key]), r)
     return pow(distance, 1.0/r)
+
+def pearson(rating1, rating2):
+    """
+    皮尔逊相关系数
+    """
+    sum_xy = 0
+    sum_x = 0
+    sum_y = 0
+    sum_x2 = 0
+    sum_y2 = 0
+    n = 0
+    for key in rating1:
+        if key in rating2:
+            n += 1
+            x = rating1[key]
+            y = rating2[key]
+            sum_xy += x*y
+            sum_x += x
+            sum_y += y
+            sum_x2 += pow(x, 2)
+            sum_y2 += pow(y, 2)
+    # 计算分母
+    denominator = sqrt(sum_x2 - pow(sum_x, 2) / n) * sqrt(sum_y2 - pow(sum_y, 2) / n)
+    if denominator == 0:
+        return 0
+    else:
+        return (sum_xy - (sum_x * sum_y) / n) / denominator
+
+# 测试pearson(rating1, rating2)
+# print(pearson(users['Angelica'], users['Bill']))
 
 def computerNearestNeighbor(username, users):
     """
