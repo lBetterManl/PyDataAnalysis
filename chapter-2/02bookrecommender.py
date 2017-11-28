@@ -1,5 +1,5 @@
-#!/usr/bin/python3
 import codecs
+
 from math import sqrt
 
 class recommender:
