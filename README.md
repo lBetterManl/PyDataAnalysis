@@ -22,6 +22,9 @@ sqlserver-test 利用pymssql连接SQL Server数据库
 
 `chapter-3` 修正的余弦相似度（基于物品的相似性）  
 
+## 分类  
+
+`chapter-4`潘多拉音乐推荐  
 
 
 
